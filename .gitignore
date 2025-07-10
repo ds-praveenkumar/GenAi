@@ -3,13 +3,19 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+**/vdb
+**/*.pdf
 # C extensions
 *.so
+
 
 **/*.pdf
 **/*.csv
 **/*.txt
 **/*.parquet
+
+data/
+
 
 # Distribution / packaging
 .Python
@@ -140,8 +146,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
-# Spyder project settings
+slm/saved_model/**
+**/*.txt
+Spyder project settings
 .spyderproject
 .spyproject
 
@@ -177,3 +184,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+model_*/
+grpo_*/
+Llama-*/
+data/
+unsloth_compiled*/**
+finetuning/unsloth_**/
+ddpm-*/
+vocab.json
