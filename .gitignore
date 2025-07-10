@@ -8,7 +8,14 @@ __pycache__/
 # C extensions
 *.so
 
+
+**/*.pdf
+**/*.csv
+**/*.txt
+**/*.parquet
+
 data/
+
 
 # Distribution / packaging
 .Python
