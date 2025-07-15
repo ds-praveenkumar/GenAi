@@ -22,14 +22,16 @@ from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
 from transformers import pipeline
 from langchain_community.llms import HuggingFacePipeline
+import warnings
+warnings.filterwarnings("ignore")
 
 class RAGPipelineBuilder:
     def __init__(self):
         self.document_path = None
-        self.chunk_size = 500
+        self.chunk_size = 650
         self.chunk_overlap = 50
         self.embedding_model = "sentence-transformers/all-MiniLM-L6-v2"
-        self.llm_model = "google/flan-t5-small"
+        self.llm_model = "mistralai/Mistral-7B-Instruct-v0.3"
         self.docs = None
         self.split_docs = None
         self.vectorstore = None
@@ -49,7 +51,7 @@ class RAGPipelineBuilder:
         return self
 
     def embed_documents(self):
-        embeddings = HuggingFaceEmbeddings(model_name=self.embedding_model, model_kwargs={"device": "0"})
+        embeddings = HuggingFaceEmbeddings(model_name=self.embedding_model, model_kwargs={"device": "cuda"})
         self.vectorstore = FAISS.from_documents(self.split_docs, embeddings)
         return self
 
@@ -89,7 +91,8 @@ if __name__ == "__main__":
         .create_retriever()
         .load_llm()
         .build_qa_chain()
-        .run_query("What is retrieval augmented generation?")
+        .run_query("What is docker model runner?")
     )
-
+    print("***"* 50 )
     print(response)
+    print("==="* 50 )
