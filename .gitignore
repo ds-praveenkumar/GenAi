@@ -146,9 +146,17 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-slm/saved_model/**
-**/*.txt
-Spyder project settings
+
+
+data/**/*
+finetuning/**/* 
+model_training_outputs/
+unsloth_compiled_cache
+Llama-3.2-3b-it-mental-health
+slm/saved_model
+grpo_trainer_lora_model
+# Spyder project settings
+
 .spyderproject
 .spyproject
 
@@ -158,6 +166,8 @@ Spyder project settings
 # mkdocs documentation
 /site
 
+**/*.txt
+**/*.json
 # mypy
 .mypy_cache/
 .dmypy.json
