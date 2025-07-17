@@ -8,7 +8,12 @@ console = Console()
 
 def show(content):
     
-    if len(content) > 2:
+    if len(content) >= 2:
         md = Markdown( content) 
         console.print(md)
         
+def print_console(text, color="bold magenta"):
+    if len(text) >= 2:
+        console.print(text, style=color)
+    
+    
