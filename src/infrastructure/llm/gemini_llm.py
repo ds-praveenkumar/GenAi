@@ -3,11 +3,14 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-os.environ["GOOGLE_API_KEY"]=os.getenv('GEMINI_API_KEY')
+api_key="AIzaSyA1TymO57EsVZfJF9Zv3OD7RbOWRWa6QUs"
+os.environ["GEMINI_API_KEY"] = "AIzaSyA1TymO57EsVZfJF9Zv3OD7RbOWRWa6QUs"# api_key
 
+if not api_key:
+    raise EnvironmentError("GEMINI_API_KEY is not set in environment variables.")
 class GeminiLLM:
     def __init__( self ):
-        self.model = "gemini-2.0-flash",
+        self.model = "gemini-2.5-flash",
         self.temperature=0,
         self.max_tokens=2047,
         self.timeout=None,
