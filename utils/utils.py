@@ -6,9 +6,14 @@ from rich.markdown import Markdown
 
 console = Console()
 
-def show(content):
+def show(content, color="bold magenta"):
     
-    if len(content) > 2:
+    if len(content) >= 2:
         md = Markdown( content) 
-        console.print(md)
+        console.print(md, style=color)
         
+def print_console(text, color="bold magenta"):
+    if len(text) >= 2:
+        console.print(text, style=color)
+    
+    
