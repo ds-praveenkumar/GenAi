@@ -34,8 +34,8 @@ class BaseDataLoader(ABC):
     
     def load_data( self ):
         datasets = load_dataset(    
-                                    self.data_path,
-                                     self.data_name,
+                                    self.data_name,
+                                     self.data_path,
                                      trust_remote_code=True,)
         return datasets
     
