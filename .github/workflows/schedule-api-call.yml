@@ -1,0 +1,33 @@
+name: Scheduled API Call with Logging
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Every day at 6:00 AM UTC
+  workflow_dispatch:     # Optional: manual trigger
+
+jobs:
+  call-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Make API Call and Save Response
+        run: |
+          echo "Calling API..."
+          RESPONSE=$(curl -s -X POST ${{ secrets.OLLAMA_HOST }} \
+          -d '{
+            "model": "gemma3n:e4b",
+            "prompt": "What is the capital of France?",
+            "stream" : false
+          }'
+          
+          echo "Response received:"
+          echo "$RESPONSE"
+
+          # Save to file
+          echo "$RESPONSE" > api_response_$(date +%Y%m%d_%H%M%S).json
+    
+      - name: Upload API Response as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-response
+          path: api_response_*.json
