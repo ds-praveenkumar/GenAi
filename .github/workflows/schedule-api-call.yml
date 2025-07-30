@@ -12,9 +12,7 @@ jobs:
         run: |
           echo "Calling API..."
 
-          RESPONSE=$(curl -s -X POST https://your-api.com/endpoint \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.OLLAMA_HOST }}" \
+          RESPONSE=$(curl -s -X POST ${{ secrets.OLLAMA_HOST }} \
             -d '{"model":"gemma3n:e4b","prompt":"What is the capital of France?","stream":false}'
           )
 
