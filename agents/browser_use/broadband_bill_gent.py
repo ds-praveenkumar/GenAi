@@ -25,6 +25,8 @@
 #===============================================================================
 import sys
 sys.path.append('.')
+from dotenv import load_dotenv
+load_dotenv(".env")
 
 from langgraph.prebuilt import create_react_agent
 from playwright.sync_api import sync_playwright
