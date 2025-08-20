@@ -5,4 +5,4 @@ langchain==0.3.24
 llama-index==0.12.45
 llama-index-llms-gemini==0.5.0
 spacy==3.8.7
-
+pytest-playwright==0.7.0
