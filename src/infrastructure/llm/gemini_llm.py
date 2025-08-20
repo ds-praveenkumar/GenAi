@@ -1,13 +1,14 @@
+import sys
+sys.path.append('.')
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 import os
-load_dotenv()
+load_dotenv(".env")
 
-api_key="AIzaSyA1TymO57EsVZfJF9Zv3OD7RbOWRWa6QUs"
-os.environ["GEMINI_API_KEY"] = "AIzaSyA1TymO57EsVZfJF9Zv3OD7RbOWRWa6QUs"# api_key
+api_key=os.getenv("GOOGLE_API_KEY")
 
 if not api_key:
-    raise EnvironmentError("GEMINI_API_KEY is not set in environment variables.")
+    raise EnvironmentError("GOOGLE_API_KEY is not set in environment variables.")
 class GeminiLLM:
     def __init__( self ):
         self.model = "gemini-2.5-flash",
