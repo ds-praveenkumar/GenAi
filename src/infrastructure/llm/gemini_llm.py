@@ -3,7 +3,11 @@ sys.path.append('.')
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 import os
+from langchain_google_community import TextToSpeechTool
+import wave
+from playsound import playsound
 load_dotenv(".env")
+
 
 api_key=os.getenv("GOOGLE_API_KEY")
 
@@ -25,7 +29,7 @@ class GeminiLLM:
         )
         
         return llm
-        
+                
 if __name__ == '__main__':
     gllm = GeminiLLM()
     llm = gllm.get_chat_llm()

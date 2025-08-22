@@ -15,7 +15,7 @@ models/
 **/*.csv
 **/*.txt
 **/*.parquet
-
+emails_with_images/
 data/
 
 
