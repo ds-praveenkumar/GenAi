@@ -56,14 +56,6 @@ class AgentSpeaker(TextToSpeechBaseTool):
         super().__init__()
         self.voice_id="JBFqnCBsd6RMkjVDRZzb"
 
-    def convert_text_to_speech(self, text):
-        return self.elevenlabs.text_to_speech.convert(
-            text=text,
-            voice_id=self.voice_id,
-            model_id=self.model_id,
-            output_format=self.output_format,
-        )
-
 class HumanSpeaker(TextToSpeechBaseTool):
     def __init__(self) -> None:
         super().__init__()
