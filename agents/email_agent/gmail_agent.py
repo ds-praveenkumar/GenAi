@@ -70,12 +70,13 @@ class GmailBaseAgent(ABC):
                                    )
         return agent
     
-    def main( self ):
+    def main( self , text: str ):
         agent = self.get_agent()
         input_message = {
         "role": "user",
-        "content": "get mail from daily dose of DS",
+        "content": text,
         }
+        last_ai_message = None
         config = {"configurable": {"thread_id": "abc123"}}
         for step in agent.stream(
             {"messages": [input_message]},
@@ -86,13 +87,15 @@ class GmailBaseAgent(ABC):
                 step["messages"][-1].pretty_print()
                 msg = step["messages"][-1]
                 if getattr(msg, "type", None) == "ai" or getattr(msg, "role", None) == "assistant":
-                    content = msg.content.strip()
-                    self.agent_speaker.speak(content)
+                    last_ai_message = msg.content.strip()
+                    # self.agent_speaker.speak(content)
+                    
             except Exception as e:
                 print(e)
                 print( step )
-                
+        return  last_ai_message
                 
 if __name__ == "__main__":
+    text = "get mail from daily dose of DS"
     agent = GmailBaseAgent()
-    agent.main()
+    agent.main(text)
