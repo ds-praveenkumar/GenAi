@@ -31,9 +31,9 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 import os
 ph = os.getenv("PHONE")
-
+URL = os.getenv("RAILWIRE_URL")
 def rail_wire_login(page: Page):
-    page.goto("https://jh.railwire.co.in/Websitebsscntl")
+    page.goto(URL)
 
     box = page.get_by_role("textbox")
     box.fill(ph)
