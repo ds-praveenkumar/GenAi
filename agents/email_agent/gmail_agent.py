@@ -35,7 +35,7 @@ from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
 
 from src.infrastructure.llm.gemini_llm import GeminiLLM
-from tools.mail_tool import view_unread_messages_from_sender
+from tools.mail_tool import view_unread_messages_from_sender, list_unread_messages, list_unread_messages_from_sender
 from src.infrastructure.llm.tts import HumanSpeaker, AgentSpeaker
 
 
@@ -44,8 +44,11 @@ class GmailBaseAgent(ABC):
         self.gllm = GeminiLLM()
         self.llm = self.gllm.get_chat_llm()
         self.page = None
-        self.system_prompt = """you are a Gmail Agent. Your job is to get the unread messages from a specific sender, 
-        read them and summarize them in  detailed manner one by one"""
+        self.system_prompt = """you are a Gmail Agent. Your job is to 
+        1. get the unread messages from a specific sender, read them and summarize them in  detailed manner one by one using tool `get_unread_messages_from_sender`. 
+        2. If the user wants to get the list of unread messages, give the sender name and read the subject of the message `get_unread_messages_list`.
+        3. If the user wants to get the list of unread messages from a specific sender, give the sender name and read the subject of the message `get_unread_messages_list_from_sender`.
+        """
         self.human_speaker = HumanSpeaker()
         self.agent_speaker = AgentSpeaker()
         
@@ -60,8 +63,33 @@ class GmailBaseAgent(ABC):
         else:
             return "No messages found"
         
+    @tool
+    def get_unread_messages_list():
+        """
+            Tool to retrieve message from sender
+        """
+        mails  = list_unread_messages()
+        if len(mails) > 0:
+            return mails
+        else:
+            return "No messages found"
+        
+    @tool
+    def get_unread_messages_list_from_sender( sender : str):
+        """
+            Tool to retrieve list message from sender
+        """
+        mails  = list_unread_messages_from_sender(sender)
+        if len(mails) > 0:
+            return mails
+        else:
+            return "No messages found"
+        
     def get_agent(self):
-        tools = [GmailBaseAgent.get_unread_messages_from_sender]
+        tools = [GmailBaseAgent.get_unread_messages_from_sender, 
+                 GmailBaseAgent.get_unread_messages_list,
+                 GmailBaseAgent.get_unread_messages_list_from_sender
+                 ]
         memory = MemorySaver()
         agent = create_react_agent(self.llm, 
                                    prompt=self.system_prompt,
