@@ -66,18 +66,67 @@ def get_gmail_service():
     return build('gmail', 'v1', credentials=creds)
 
 def list_unread_messages():
+    """
+    Lists unread messages and returns their From and Subject details.
+    Limits to the first 10 messages for efficiency.
+    """
     service = get_gmail_service()
     results = service.users().messages().list(userId='me', labelIds=['UNREAD']).execute()
     messages = results.get('messages', [])
+    
     if not messages:
         print("No unread messages.")
-    else:
-        print(f"Found {len(messages)} unread messages:")
-        for msg in messages:
-            msg_data = service.users().messages().get(userId='me', id=msg['id']).execute()
-            for header in msg_data['payload']['headers']:
-                if header['name'] == 'Subject':
-                    print("Subject:", header['value'])
+        return []
+    
+    print(f"Found {len(messages)} unread message(s):")
+    output = []
+    for msg in messages[:10]:
+        msg_data = service.users().messages().get(userId='me', id=msg['id']).execute()
+        headers = msg_data['payload'].get('headers', [])
+        
+        subject = next((h['value'] for h in headers if h['name'] == 'Subject'), "(No Subject)")
+        sender = next((h['value'] for h in headers if h['name'] == 'From'), "(Unknown Sender)")
+        
+        print(f"From: {sender} | Subject: {subject}")
+        output.append({"from": sender, "subject": subject})
+    
+    return output
+
+def list_unread_messages_from_sender(sender_name: str):
+    """
+    Lists unread messages from a particular sender (partial name match)
+    and returns their From and Subject details.
+    """
+    service = get_gmail_service()
+    # Gmail search supports partial name match inside quotes
+    query = f'is:unread from:"{sender_name}"'
+    
+    results = service.users().messages().list(
+        userId='me',
+        labelIds=['UNREAD'],
+        q=query
+    ).execute()
+    messages = results.get('messages', [])
+
+    if not messages:
+        print(f"No unread messages found from '{sender_name}'.")
+        return []
+
+    print(f"Found {len(messages)} unread message(s) from '{sender_name}':")
+    output = []
+    for msg in messages[:10]:  # limit to 10 for performance
+        msg_data = service.users().messages().get(userId='me', id=msg['id']).execute()
+        headers = msg_data['payload'].get('headers', [])
+        
+        subject = next((h['value'] for h in headers if h['name'] == 'Subject'), "(No Subject)")
+        sender = next((h['value'] for h in headers if h['name'] == 'From'), "(Unknown Sender)")
+        
+        print(f"From: {sender} | Subject: {subject}")
+        output.append({"from": sender, "subject": subject})
+    
+    return output
+
+
 def view_unread_messages():
     """
     Retrieves and displays unread messages from the user's inbox
@@ -435,9 +484,9 @@ def view_unread_messages_from_sender(sender_name: str):
 
 
 if __name__ == '__main__':
-    # list_unread_messages()
+    list_unread_messages()
     # view_unread_messages()
     # view_unread_messages()
     # view_unread_messages_final()
-    mails = view_unread_messages_from_sender("Neo ")
-    print( mails )
+    # mails = view_unread_messages_from_sender("Neo ")
+    # print( mails )
