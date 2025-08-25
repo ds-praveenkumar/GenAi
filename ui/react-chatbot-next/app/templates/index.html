@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Play Audio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col items-center justify-center h-screen bg-gray-50">
+
+  <div class="bg-white shadow-lg rounded-2xl p-6 w-80 text-center">
+    <h1 class="text-xl font-bold mb-4">Audio Player</h1>
+    <audio id="audio" src="{{ audio_url }}"></audio>
+
+    <button id="toggleBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full shadow">
+      ▶ Play
+    </button>
+  </div>
+
+  <script>
+    const audio = document.getElementById("audio");
+    const toggleBtn = document.getElementById("toggleBtn");
+
+    toggleBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        toggleBtn.textContent = "⏸ Pause";
+        toggleBtn.classList.remove("bg-blue-500");
+        toggleBtn.classList.add("bg-red-500");
+      } else {
+        audio.pause();
+        toggleBtn.textContent = "▶ Play";
+        toggleBtn.classList.remove("bg-red-500");
+        toggleBtn.classList.add("bg-blue-500");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -17,6 +17,7 @@ models/
 **/*.parquet
 emails_with_images/
 data/
+ui/multiagent-react-app/node_modules
 
 
 # Distribution / packaging
